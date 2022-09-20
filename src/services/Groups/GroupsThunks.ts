@@ -130,7 +130,6 @@ export const groupsThunks = () => {
       'groups/update-roles',
       async ({ data, onSuccess }, { rejectWithValue, dispatch }) => {
         try {
-          console.log("DATA")
           const response = await Api.post(`/group/manage-roles`, data) as UpdateGroupRolesResponse
           dispatch(getGroups())
           onSuccess()

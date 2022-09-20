@@ -16,8 +16,7 @@ class Api {
       formBody = formBody.join("&")
     }
 
-    console.log(`${apiUrl}${endpoint}`, data)
-    const response = await fetch(`${apiUrl}${endpoint}`, {
+        const response = await fetch(`${apiUrl}${endpoint}`, {
       method: 'POST',
       body: isFormUrlencoded ? formBody : JSON.stringify(data),
       headers: new Headers({
@@ -48,7 +47,6 @@ class Api {
       formBody = formBody.join("&")
     }
 
-    console.log(`${apiUrl}${endpoint}`, data)
     const response = await fetch(`${apiUrl}${endpoint}`, {
       method: 'PATCH',
       body: isFormUrlencoded ? formBody : JSON.stringify(data),
@@ -60,7 +58,6 @@ class Api {
 
     const body = await response.json()
 
-    console.log("BODY", body)
     if (response.ok) {
       return body
     } else {
@@ -83,7 +80,6 @@ class Api {
     if (response.ok) {
       return body
     } else {
-      console.log("error", body)
       throw Error(body.message)
     }
   }
@@ -103,7 +99,6 @@ class Api {
     if (response.ok) {
       return body
     } else {
-      console.log("error", body)
       throw Error(body.message)
     }
   }
