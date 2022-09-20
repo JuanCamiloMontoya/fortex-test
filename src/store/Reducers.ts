@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage'
 import { authReducer } from "../services/Auth/AuthSlice"
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { groupsReducer } from "../services/Groups/GroupsSlice"
+import { StorageService } from "../common/storage/storage-service"
 
 const reducers = combineReducers({
   auth: authReducer,
@@ -11,8 +12,10 @@ const reducers = combineReducers({
 })
 
 const rootReducer = (state: any, action: PayloadAction) => {
-  if (action.type === 'auth/logout')
+  if (action.type === 'auth/logout') {
+    StorageService.removeItem('token')
     state = undefined
+  }
   return reducers(state, action)
 }
 
