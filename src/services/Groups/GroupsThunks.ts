@@ -90,28 +90,19 @@ export const groupsThunks = () => {
   interface UpdateGroupMembersResponse {
     name: string,
     message: string,
-    groupId: string
+    groupId: string,
+    newValues: string[]
   }
   const updateGroupMembers = createAsyncThunk
     <UpdateGroupMembersResponse, UpdateGroupMembersAttributes, { rejectValue: ErrorResponse }>(
       'groups/update-members',
-      async ({ data, onSuccess }, { rejectWithValue, dispatch, getState }) => {
+      async ({ data, onSuccess }, { rejectWithValue, dispatch }) => {
         try {
-          const state = getState()
-          console.log("DATA", data)
-          console.log("state", state)
-
-          /* let newState = state.groups
-          if (newState.group) {
-            console.log("PAYLOAD2", newState.group.people)
-            const index = newState.group.people.findIndex(({ id }) => (id === payload.groupId))
-            console.log("PAYLOAD", index)
-          } */
           const response = await Api.post(`/group/manage-members`, data) as UpdateGroupMembersResponse
           dispatch(getGroups())
-
           onSuccess()
-          return { ...response, groupId: data.groupId }
+          const { groupId, newValues } = data
+          return { ...response, groupId, newValues }
         } catch (error: any) {
           return rejectWithValue({ error: error.toString() })
         }

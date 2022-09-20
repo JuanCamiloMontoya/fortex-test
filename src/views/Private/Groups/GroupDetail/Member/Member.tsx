@@ -1,4 +1,4 @@
-import { Checkbox, Paper, Typography } from "@mui/material"
+import { Backdrop, Checkbox, CircularProgress, Paper, Typography } from "@mui/material"
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -55,6 +55,9 @@ const Members = () => {
       </AccordionSummary>
       <AccordionDetails>
         <TableContainer component={Paper}>
+          <Backdrop open={status.updateGroupMembers === 'loading'}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
           <Table sx={{ minWidth: 300 }} aria-label="simple table">
             <TableHead>
               <TableRow>

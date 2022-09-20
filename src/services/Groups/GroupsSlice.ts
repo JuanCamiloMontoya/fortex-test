@@ -5,7 +5,8 @@ import {
   Group,
   groupsInitialState,
   GroupsModulesTypes,
-  GroupsStateTypes
+  GroupsStateTypes,
+  People
 } from './GroupsInitialState'
 
 const initialState = groupsInitialState()
@@ -79,6 +80,12 @@ const groupsSlice = createSlice({
       })
       .addCase(updateGroupMembers.fulfilled, (state, { payload }) => {
         state.status.updateGroupMembers = 'idle'
+        if (state.group && state.group.people?.length > 0) {
+          state.group.people = state.group?.people.map((person) => ({
+            ...person,
+            active: payload.newValues.includes(person.id)
+          }))
+        }
       })
       .addCase(updateGroupMembers.rejected, (state, { payload }) => {
         state.status.updateGroupMembers = 'error'
