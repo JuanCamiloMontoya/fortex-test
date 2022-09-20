@@ -110,16 +110,32 @@ export const groupsThunks = () => {
     )
 
 
+  interface UpdateGroupRolesAttributes {
+    data: {
+      groupId: string
+      oldValues: string[],
+      newValues: string[]
+    },
+    onSuccess: () => void
+  }
+  interface UpdateGroupRolesResponse {
+    name: string,
+    message: string,
+    groupId: string,
+    newValues: string[]
+  }
+
   const updateGroupRoles = createAsyncThunk
-    <UpdateGroupResponse, UpdateGroupAttributes, { rejectValue: ErrorResponse }>(
+    <UpdateGroupRolesResponse, UpdateGroupRolesAttributes, { rejectValue: ErrorResponse }>(
       'groups/update-roles',
       async ({ data, onSuccess }, { rejectWithValue, dispatch }) => {
         try {
-          const { id, ...endData } = data
-          await Api.patch(`/group/update?id=${id}`, endData, true)
+          console.log("DATA")
+          const response = await Api.post(`/group/manage-roles`, data) as UpdateGroupRolesResponse
           dispatch(getGroups())
           onSuccess()
-          return endData as UpdateGroupResponse
+          const { groupId, newValues } = data
+          return { ...response, groupId, newValues }
         } catch (error: any) {
           return rejectWithValue({ error: error.toString() })
         }
@@ -141,7 +157,6 @@ export const groupsThunks = () => {
       async ({ id, onSuccess }, { rejectWithValue, dispatch }) => {
         try {
           const response = await Api.delete(`/group/delete?id=${id}`)
-          console.log("RESPONSE", response)
           dispatch(getGroups())
           onSuccess()
           return response as DeleteGroupResponse
@@ -156,6 +171,7 @@ export const groupsThunks = () => {
     createGroup,
     updateGroup,
     deleteGroup,
-    updateGroupMembers
+    updateGroupMembers,
+    updateGroupRoles
   }
 }

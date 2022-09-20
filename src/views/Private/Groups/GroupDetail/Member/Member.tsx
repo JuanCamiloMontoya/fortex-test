@@ -21,25 +21,23 @@ const Members = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
-    const oldValues = group?.people.filter((member) => member.active === true)
+    let oldValues: any[] = group?.people.filter((member) => member.active === true).map(({ id }) => id) || []
 
     let newValues: string[] = []
     if (event.target.checked) {
-      newValues = oldValues?.map(({ id }) => id) || []
+      newValues = [...oldValues]
       newValues.push(event.target.name)
     } else {
-      newValues = newValues.filter((member) => member != event.target.name) || []
+      newValues = oldValues.filter((id) => id != event.target.name) || []
     }
 
     const data = {
       groupId: group?.id || '',
-      oldValues: oldValues?.map(({ id }) => id) || [],
-      newValues: newValues
+      oldValues,
+      newValues
     }
 
-    const onSuccess = () => {
-
-    }
+    const onSuccess = () => { }
 
     dispatch(groupsActions.updateGroupMembers({ data, onSuccess }))
   }

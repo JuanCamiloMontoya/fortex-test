@@ -11,7 +11,7 @@ import {
 
 const initialState = groupsInitialState()
 const thunks = groupsThunks()
-const { getGroups, createGroup, updateGroup, deleteGroup, updateGroupMembers } = thunks
+const { getGroups, createGroup, updateGroup, deleteGroup, updateGroupMembers, updateGroupRoles } = thunks
 
 const groupsSlice = createSlice({
   name: "groups",
@@ -80,16 +80,31 @@ const groupsSlice = createSlice({
       })
       .addCase(updateGroupMembers.fulfilled, (state, { payload }) => {
         state.status.updateGroupMembers = 'idle'
-        if (state.group && state.group.people?.length > 0) {
+        if (state.group && state.group.people?.length > 0)
           state.group.people = state.group?.people.map((person) => ({
             ...person,
             active: payload.newValues.includes(person.id)
           }))
-        }
       })
       .addCase(updateGroupMembers.rejected, (state, { payload }) => {
         state.status.updateGroupMembers = 'error'
         state.error.updateGroupMembers = payload?.error || ''
+      })
+      .addCase(updateGroupRoles.pending, (state) => {
+        state.status.updateGroupRoles = 'loading'
+        state.error.updateGroupRoles = null
+      })
+      .addCase(updateGroupRoles.fulfilled, (state, { payload }) => {
+        state.status.updateGroupRoles = 'idle'
+        if (state.group && state.group.roles?.length > 0)
+          state.group.roles = state.group?.roles.map((role) => ({
+            ...role,
+            active: payload.newValues.includes(role.id)
+          }))
+      })
+      .addCase(updateGroupRoles.rejected, (state, { payload }) => {
+        state.status.updateGroupRoles = 'error'
+        state.error.updateGroupRoles = payload?.error || ''
       })
   }
 })

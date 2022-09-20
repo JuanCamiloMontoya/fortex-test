@@ -28,14 +28,16 @@ export interface GroupsStateTypes {
     createGroup: string | null,
     updateGroup: string | null,
     deleteGroup: string | null,
-    updateGroupMembers: string | null
+    updateGroupMembers: string | null,
+    updateGroupRoles: string | null
   },
   status: {
     getGroups: StatusTypes,
     createGroup: StatusTypes,
     updateGroup: StatusTypes,
     deleteGroup: StatusTypes,
-    updateGroupMembers: StatusTypes
+    updateGroupMembers: StatusTypes,
+    updateGroupRoles: StatusTypes,
   }
 }
 
@@ -48,12 +50,14 @@ export const groupsInitialState = (): GroupsStateTypes => ({
     updateGroup: null,
     deleteGroup: null,
     updateGroupMembers: null,
+    updateGroupRoles: null
   },
   status: {
     getGroups: 'idle',
     createGroup: 'idle',
     updateGroup: 'idle',
     deleteGroup: 'idle',
-    updateGroupMembers: 'idle'
+    updateGroupMembers: 'idle',
+    updateGroupRoles: 'idle'
   }
 })
